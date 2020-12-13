@@ -15,8 +15,22 @@ def find_sum(previous, value):
             return True
     return False
 
+def find_contiguous_sum(numbers, value):
+    start_pointer = 0
+    current_values = []
+    while start_pointer <= len(numbers):
+        current_pointer = start_pointer
+        while sum(current_values) < value and current_pointer <= len(numbers):
+            current_values.append(numbers[current_pointer])
+            current_pointer += 1
+        if sum(current_values) == value:
+            return current_values
+        current_values = []
+        start_pointer += 1
+    if current_pointer >= len(numbers):
+        return None
+
 def find(preamble_length, numbers):
-    
     for i in range(preamble_length, len(numbers)):
         test_value = numbers[i]
         test_range = numbers[i-preamble_length:i]
@@ -26,4 +40,8 @@ def find(preamble_length, numbers):
 with open('input.txt') as file:
     numbers = [int(x) for x in file.read().splitlines()]
 
-print(find(25, numbers))
+error_number = find(25, numbers)
+print(error_number)
+sum_area = find_contiguous_sum(numbers, error_number)
+sum_area.sort()
+print(sum_area[0] + sum_area[-1])
